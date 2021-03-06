@@ -41,7 +41,7 @@ public extension HTTPOperationsClient {
         let httpClient: HTTPOperationsClient
         let retryConfiguration: HTTPClientRetryConfiguration
         let retryOnError: (HTTPClientError) -> Bool
-        let queue = DispatchQueue.global()
+        let retryScheduleQueue = DispatchQueue.global()
         let latencyMetricDetails: (Date, Metrics.Timer)?
         let outwardsRequestAggregators: (OutwardsRequestAggregator, RetriableOutwardsRequestAggregator)?
         
@@ -138,7 +138,7 @@ public extension HTTPOperationsClient {
                 logger.warning(
                     "Request failed with error: \(error). Remaining retries: \(currentRetriesRemaining). Retrying in \(retryInterval) ms.")
                 let deadline = DispatchTime.now() + .milliseconds(retryInterval)
-                queue.asyncAfter(deadline: deadline) {
+                retryScheduleQueue.asyncAfter(deadline: deadline) {
                     logger.debug("Reattempting request due to remaining retries: \(currentRetriesRemaining)")
                     
                     let nextFuture = self.executeAsEventLoopFutureWithOutput()
