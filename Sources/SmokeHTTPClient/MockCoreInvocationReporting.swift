@@ -16,6 +16,7 @@
 //
 import Foundation
 import Logging
+import NIO
 
 public typealias MockCoreInvocationReporting =
     StandardHTTPClientCoreInvocationReporting<MockInvocationTraceContext>
@@ -26,10 +27,14 @@ public typealias MockCoreInvocationReporting =
 public extension MockCoreInvocationReporting {
     init(
             logger: Logger = Logger(label: "com.amazon.SmokeHTTPClient.MockCoreInvocationReporting"),
-            internalRequestId: String = "internalRequestId") {
+            internalRequestId: String = "internalRequestId",
+            eventLoop: EventLoop,
+            outwardsRequestAggregator: OutwardsRequestAggregator? = nil) {
         self.logger = logger
         self.internalRequestId = internalRequestId
         self.traceContext = MockInvocationTraceContext()
+        self.eventLoop = eventLoop
+        self.outwardsRequestAggregator = outwardsRequestAggregator
     }
 }
  

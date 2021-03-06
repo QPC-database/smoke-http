@@ -215,7 +215,7 @@ public extension HTTPOperationsClient {
             let wrappingInvocationContext = invocationContext.withOutgoingRequestIdLoggerMetadata()
         
             // use the specified event loop or pick one for the client to use for all retry attempts
-            let eventLoop = invocationContext.reporting.eventLoop ?? self.eventLoopGroup.next()
+            let eventLoop = invocationContext.reporting.eventLoop
             
             let retriable = ExecuteAsEventLoopFutureWithOutputRetriable<InputType, OutputType, StandardHTTPClientInvocationReporting<InvocationReportingType.TraceContextType>, HandlerDelegateType>(
                 endpointOverride: endpointOverride, endpointPath: endpointPath,
