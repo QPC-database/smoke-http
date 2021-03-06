@@ -28,7 +28,7 @@ public extension MockCoreInvocationReporting {
     init(
             logger: Logger = Logger(label: "com.amazon.SmokeHTTPClient.MockCoreInvocationReporting"),
             internalRequestId: String = "internalRequestId",
-            eventLoop: EventLoop,
+            eventLoop: EventLoop?,
             outwardsRequestAggregator: OutwardsRequestAggregator? = nil) {
         self.logger = logger
         self.internalRequestId = internalRequestId
