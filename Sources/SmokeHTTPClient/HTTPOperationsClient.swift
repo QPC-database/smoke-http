@@ -163,7 +163,7 @@ public struct HTTPOperationsClient {
                 }
             }
         } catch {
-            let eventLoop = invocationContext.reporting.eventLoop
+            let eventLoop = invocationContext.reporting.eventLoop ?? self.eventLoopGroup.next()
             
             let promise = eventLoop.makePromise(of: HTTPResponseComponents.self)
             
@@ -228,8 +228,8 @@ public struct HTTPOperationsClient {
                 
         let responseFuture: EventLoopFuture<HTTPClient.Response>
         // if an event loop is provided that can be used with this client
-        let eventLoopOverride = invocationContext.reporting.eventLoop
-        if self.eventLoopGroup.makeIterator().contains(where: { $0 === eventLoopOverride }) {
+        if let eventLoopOverride = invocationContext.reporting.eventLoop,
+                   self.eventLoopGroup.makeIterator().contains(where: { $0 === eventLoopOverride }) {
             responseFuture = self.wrappedHttpClient.execute(request: request,
                                                             eventLoop: .delegateAndChannel(on: eventLoopOverride))
         } else {

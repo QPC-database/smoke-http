@@ -64,7 +64,7 @@ public protocol HTTPClientCoreInvocationReporting {
     /// The trace context associated with this invocation.
     var traceContext: TraceContextType { get }
     
-    var eventLoop: EventLoop { get }
+    var eventLoop: EventLoop? { get }
     
     var outwardsRequestAggregator: OutwardsRequestAggregator? { get }
 }
